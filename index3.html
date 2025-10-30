@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saheli's Payroll Portal 💼</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      transition: background 0.4s;
+    }
+
+    header {
+      background: linear-gradient(90deg, #ff9966, #ff5e62);
+      color: white;
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #ffe066;
+      transform: scale(1.05);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dashboard {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 200px;
+      border-radius: 12px;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .blue { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+    .green { background: linear-gradient(135deg, #00b09b, #96c93d); }
+    .orange { background: linear-gradient(135deg, #ff9966, #ff5e62); }
+    .purple { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+
+    input {
+      padding: 10px;
+      margin-right: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 180px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    input:focus {
+      border-color: #ff5e62;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 94, 98, 0.4);
+    }
+
+    button {
+      background: linear-gradient(135deg, #ff9966, #ff5e62);
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th {
+      background-color: #ff5e62;
+      color: white;
+      text-transform: uppercase;
+      padding: 12px;
+    }
+    td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .dark-mode {
+      background: #121212;
+      color: #f1f1f1;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    Saheli's Payroll  
+    <nav>
+      <a href="#">🏠 Dashboard</a>
+      <a href="#">👩‍💼 Employees</a>
+      <a href="#">💸 Payroll</a>
+      <a href="#">📒 Journal</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="dashboard">
+      <div class="card blue">
+        <h4>Saheli's Payroll </h4>
+        <h4>Total Payroll</h4>
+        <h2 id="totalPayroll">$0.00</h2>
+      </div>
+      <div class="card green">
+        <h4>Active Employees</h4>
+        <h2 id="totalEmployees">0</h2>
+      </div>
+      <div class="card orange">
+        <h4>Net Wages</h4>
+        <h2 id="totalNet">$0.00</h2>
+      </div>
+      <div class="card purple">
+        <h4>Journal Entries</h4>
+        <h2 id="totalEntries">0</h2>
+      </div>
+    </div>
+
+    <h3>➕ Add Employee</h3>
+    <div>
+      <input type="text" id="name" placeholder="Employee Name">
+      <input type="number" id="hours" placeholder="Hours Worked">
+      <input type="number" id="rate" placeholder="Hourly Rate">
+      <button onclick="addEmployee()">Add</button>
+    </div>
+
+    <h3>📋 Payroll Records</h3>
+    <table id="payrollTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Hours</th>
+          <th>Rate</th>
+          <th>Gross</th>
+          <th>Tax (10%)</th>
+          <th>Net Pay</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer>✨ Developed by <strong>Saheli</strong> ✨</footer>
+
+  <script>
+    let employees = [];
+
+    function addEmployee() {
+      const name = document.getElementById("name").value;
+      const hours = parseFloat(document.getElementById("hours").value);
+      const rate = parseFloat(document.getElementById("rate").value);
+
+      if (!name || isNaN(hours) || isNaN(rate)) {
+        alert("⚠️ Please fill all fields correctly!");
+        return;
+      }
+
+      const gross = hours * rate;
+      const tax = gross * 0.1;
+      const net = gross - tax;
+
+      employees.push({ name, hours, rate, gross, tax, net });
+      updateTable();
+      clearFields();
+    }
+
+    function updateTable() {
+      const tbody = document.querySelector("#payrollTable tbody");
+      tbody.innerHTML = "";
+      let totalGross = 0;
+      let totalNet = 0;
+
+      employees.forEach(emp => {
+        totalGross += emp.gross;
+        totalNet += emp.net;
+        const row = `
+          <tr>
+            <td>${emp.name}</td>
+            <td>${emp.hours}</td>
+            <td>$${emp.rate.toFixed(2)}</td>
+            <td>$${emp.gross.toFixed(2)}</td>
+            <td>$${emp.tax.toFixed(2)}</td>
+            <td>$${emp.net.toFixed(2)}</td>
+          </tr>`;
+        tbody.innerHTML += row;
+      });
+
+      document.getElementById("totalPayroll").innerText = "$" + totalGross.toFixed(2);
+      document.getElementById("totalNet").innerText = "$" + totalNet.toFixed(2);
+      document.getElementById("totalEmployees").innerText = employees.length;
+      document.getElementById("totalEntries").innerText = employees.length;
+    }
+
+    function clearFields() {
+      document.getElementById("name").value = "";
+      document.getElementById("hours").value = "";
+      document.getElementById("rate").value = "";
+    }
+  </script>
+</body>
+</html>
